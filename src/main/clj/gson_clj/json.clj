@@ -62,7 +62,7 @@
   gson-builder)
 
 (defn configure-date-format
-  [^GsonBuilder gson-builder {:keys [date-format]}]
+  [^GsonBuilder gson-builder {:keys [^String date-format]}]
   (when date-format
     (.setDateFormat gson-builder date-format))
   gson-builder)
@@ -102,7 +102,7 @@
   ([^Gson gson json-source deserialize-as]
     (.fromJson gson json-source deserialize-as)))
 
-(defn- is-default-type-adapter-registered?
+(defn- are-clojure-type-adapters-registered?
   [^Gson gson]
   (instance? DynamicObjectTypeAdapter (.getAdapter gson DynamicObject)))
 
@@ -111,7 +111,7 @@
    	(from-json (make-gson) json-source))
   ([^Gson gson json-source]
     ;; prefer deserialization via DynamicObjectTypeAdapter over the Gson provided ObjectTypeAdapter
-    (if (is-default-type-adapter-registered? gson)
+    (if (are-clojure-type-adapters-registered? gson)
       (-> (from-json-as gson json-source DynamicObject)
           (.getValue))
       (from-json-as gson json-source Object))))
