@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [com.google.code.gson/gson "2.2.2"]]
   :warn-on-reflection true
-  :repl-options { :init-ns gson-clj.core }
+  :repl-options { :init-ns gson-clj.json }
   :bootclasspath true
   :source-paths ["src/main/clj"]
   :test-paths ["src/test/clj"]
