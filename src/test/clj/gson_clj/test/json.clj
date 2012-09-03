@@ -1,9 +1,7 @@
 (ns gson-clj.test.json
     (:require [gson-clj.gson :as gson])
     (:use [gson-clj.json]
-          [clojure.test])
-    (:import [com.spoon16.gson_clj DynamicObject
-                                   DynamicObjectTypeAdapter]))
+          [clojure.test]))
 
 (deftest test-to-json
     (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
