@@ -1,9 +1,9 @@
 (ns ^{:author "Eric Schoonover"
        :doc "Clojure bindings for Gson, Googles JSON parsing library.
-            See http://www.json.org/
+            See https://code.google.com/p/google-gson/ and http://www.json.org/
             Use 'to-json' or 'to-json-as' to serialize an object as a JSON string.
             Use 'from-json' or 'from-json-as' to deserialize an object from JSON source.
-            Use 'parse-json' to parse JSON source into a tree with a com.google.gson.JsonElement root"}
+            Use 'parse-json' to parse JSON source into a tree typed com.google.gson.JsonElement"}
   gson-clj.json
   (:import [com.google.gson Gson
                             GsonBuilder
@@ -28,24 +28,36 @@
                             ;; :exclusion-strategies { :serialization []
                             ;;                         :deserialization []
                             ;;                         :both [] }
-                            ;; :disable-html-escaping false
-                               :disable-inner-class-serialization true
-                            ;; :enable-complex-map-key-serialization false
-                            ;; :exclude-fields-with-modifiers []
-                            ;; :exclude-fields-without-expose-annotation false
-                            ;; :generate-non-executable-json false
-                            ;; :type-adapters []
-                            ;; :type-adapter-factories []
-                            ;; :type-heirarchy-adapters []
-                            ;; :serialize-nulls false
-                            ;; :serialize-special-floating-point-values false
-                               :date-format "yyyy-MM-dd'T'HH:mm:ssZ"
-                            ;; :field-naming { :policy
-                            ;;                 :strategy } 
-                            ;; :long-serialization-policy
-                               :enable-pretty-printing true
+                            ;; :disable-html-escaping true ;; default false
+                               :disable-inner-class-serialization true ;; defualt false
+                               :enable-complex-map-key-serialization true ;; default false, the default Gson Map TypeAdapter is a bit annoying in that only
+                                                                          ;;                if this is enabled will keys be serialized via their registered
+                                                                          ;;                type adapter, if this is not enabled than String.valueOf is called
+                                                                          ;;                for each key in the target map.  I would have preferred if 
+                                                                          ;;                String.valueOf were a fallback in the case that the registered
+                                                                          ;;                TypeAdapter did not return a JsonPrimitive
+                            ;; :exclude-fields-with-modifiers [] ;; default []
+                            ;; :exclude-fields-without-expose-annotation true ;; default false
+                            ;; :generate-non-executable-json true ;; default false
+                            ;; :type-adapters [] ;; default []
+                            ;; :type-adapter-factories [] ;; default []
+                            ;; :type-heirarchy-adapters [] ;; default []
+                            ;; :serialize-nulls true ;; default false
+                            ;; :serialize-special-floating-point-values true ;; default false
+                               :date-format "yyyy-MM-dd'T'HH:mm:ssZ" ;; default nil
+                            ;; :field-naming { :policy (FieldNamingPolicy/LOWER_CASE_WITH_DASHES) ;; default FieldNamingPolicy/IDENTITY
+                            ;;                 :strategy nil ;; default nil
+                            ;;               } 
+                            ;; :long-serialization-policy (LongSerializationPolicy/STRING) ;; default LongSerializationPolicy/DEFAULT
+                               :enable-pretty-printing true ;; default false
                             ;; :version ##
                             })
+
+(defn configure-complex-map-key-serialization
+  [^GsonBuilder gson-builder {:keys [enable-complex-map-key-serialization]}]
+  (when enable-complex-map-key-serialization
+    (.enableComplexMapKeySerialization gson-builder))
+  gson-builder)
 
 (defn configure-clojure-type-adapters
   [^GsonBuilder gson-builder {{:keys [enabled keywordize?]} :clojure-type-adapters}]
