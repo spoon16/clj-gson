@@ -16,9 +16,9 @@
 
 ;; documentation, https://github.com/spoon16/gson-clj/blob/master/gson-config.example
 (def ^:dynamic *gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                              :flags #{:pretty-printing
-                                       :enable-complex-map-key-serialization}
+                              :flags #{:enable-complex-map-key-serialization}
                               :date-format "yyyy-MM-dd'T'HH:mm:ssZ"})
+
 (defn- configure-clojure-type-adapters
   [^GsonBuilder gson-builder {:keys [clojure-type-adapters]}]
   (when clojure-type-adapters
@@ -29,9 +29,9 @@
         (.registerTypeHierarchyAdapter Named (NamedSerializer.)))))
   gson-builder)
 
-(defmulti configure-flag identity)
+(defmulti configure-flag (fn [flag _] (identity flag)))
 
-;; unknown flag, ignore
+;; ignore unknown flags
 (defmethod configure-flag :default
   [_ ^GsonBuilder gson-builder]
   gson-builder)
@@ -70,7 +70,7 @@
 
 (defn- configure-flags
   [^GsonBuilder gson-builder {:keys [flags]}]
-  (map configure-flag flags)
+  (doall (map #(configure-flag % gson-builder) flags))
   gson-builder)
 
 (defn- set-date-format
