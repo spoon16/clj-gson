@@ -1,11 +1,14 @@
 (ns gson-clj.test.json
     (:require [gson-clj.gson :as gson])
     (:use [gson-clj.json]
-          [clojure.test]))
+          [clojure.test])
+    (:import [com.spoon16.gson_clj DynamicObject
+                                   DynamicObjectTypeAdapter]))
 
 (deftest test-to-json
-    (binding [gson/*gson-config* (gson/make-gson {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                                             :flags #{:enable-complex-map-key-serialization}})]
+    (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
+                                  :flags #{:enable-complex-map-key-serialization}}]
+
          (testing "vector"
             (let [expected "[]"
                   result (to-json [])]
@@ -22,8 +25,8 @@
                  (is (= expected result))))
 
          (testing "number"
-            (let [expected "123.67890"
-                  result (to-json 123.67890)]
+            (let [expected "123.6789"
+                  result (to-json 123.6789)]
                  (is (= expected result))))
 
          (testing "boolean"
@@ -45,8 +48,8 @@
                  (is (= expected result))))))
 
 (deftest test-from-json
-    (binding [gson/*gson-config* (gson/make-gson {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                                             :flags #{:enable-complex-map-key-serialization}})]
+    (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
+                                  :flags #{:enable-complex-map-key-serialization}}]
     (testing "vector"
         (let [expected []
               result (from-json "[]")]
@@ -63,8 +66,8 @@
              (is (= expected result))))
 
     (testing "number"
-        (let [expected 123.67890
-              result (from-json "123.67890")]
+        (let [expected 123.6789
+              result (from-json "123.6789")]
              (is (= expected result))))
 
     (testing "boolean"
