@@ -1,6 +1,6 @@
 # gson-clj
 
-[![Build Status](https://secure.travis-ci.org/spoon16/gson-clj.png)](http://travis-ci.org/spoon16/gson-clj])
+[![Build Status](https://secure.travis-ci.org/spoon16/gson-clj.png)](http://travis-ci.org/spoon16/gson-clj)
 
 Clojure bindings for Gson, Google's JSON parsing library.
 See https://code.google.com/p/google-gson/ and http://www.json.org/
