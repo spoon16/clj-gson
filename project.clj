@@ -1,4 +1,4 @@
-(defproject com.spoon16/gson-clj "0.0.1-SNAPSHOT"
+(defproject com.spoon16/gson-clj "0.0.1"
   :description "Clojure bindings for Gson. Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of. Gson homepage; http://code.google.com/p/google-gson/"
   :url "http://github.com/spoon16/gson-clj"
   :license {:name "Eclipse Public License"
