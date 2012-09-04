@@ -15,13 +15,13 @@
   ([obj serialize-as]
     (to-json-as (gson/make-gson) obj serialize-as))
   ([^Gson gson obj serialize-as]
-    (.toJsonTree gson obj serialize-as)))
+    (.toJson gson obj serialize-as)))
 
 (defn to-json
   ([obj]
   	(to-json (gson/make-gson) obj))
   ([^Gson gson obj]
-  	(str (to-json-as gson obj (type obj)))))
+  	(to-json-as gson obj (type obj))))
 
 (defn from-json-as
   ([json-source deserialize-as]

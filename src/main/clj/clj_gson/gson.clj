@@ -16,7 +16,8 @@
 
 ;; documentation, https://github.com/spoon16/clj-gson/blob/master/gson-config.example
 (def ^:dynamic *gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                              :flags #{:enable-complex-map-key-serialization}
+                              :flags #{:enable-complex-map-key-serialization
+                                       :pretty-printing}
                               :date-format "yyyy-MM-dd'T'HH:mm:ssZ"})
 
 (defn- configure-clojure-type-adapters
