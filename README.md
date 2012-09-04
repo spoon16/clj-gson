@@ -7,6 +7,8 @@ See https://code.google.com/p/google-gson/ and http://www.json.org/
 
 ## Dependency Information
 
+clj-gson has been published to [Clojars.org](https://clojars.org/com.spoon16/clj-gson)
+
 ### [Leiningen](https://github.com/technomancy/leiningen)
 
     [com.spoon16/clj-gson "0.0.1"]
