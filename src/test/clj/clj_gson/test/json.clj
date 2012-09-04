@@ -1,6 +1,6 @@
-(ns gson-clj.test.json
-    (:require [gson-clj.gson :as gson])
-    (:use [gson-clj.json]
+(ns clj-gson.test.json
+    (:require [clj-gson.gson :as gson])
+    (:use [clj-gson.json]
           [clojure.test]))
 
 (deftest test-to-json

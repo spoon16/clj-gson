@@ -1,4 +1,4 @@
-package com.spoon16.gson_clj;
+package com.spoon16.clj_gson;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -1,20 +1,20 @@
 (ns ^{:author "Eric Schoonover (http://spoon16.com/)"
       :doc "Clojure bindings for Gson, Google's JSON parsing library.
             See https://code.google.com/p/google-gson/ and http://www.json.org/
-            Use 'make-gson' to build a com.google.gson.Gson instance that may be passed to methods in the gson-clj.json ns"}
-  gson-clj.gson
+            Use 'make-gson' to build a com.google.gson.Gson instance that may be passed to methods in the clj-gson.json ns"}
+  clj-gson.gson
   (:import [com.google.gson Gson
                             GsonBuilder
                             JsonParser
                             JsonSerializer
                             JsonDeserializer]
            [clojure.lang Named]
-           [com.spoon16.gson_clj NamedSerializer
+           [com.spoon16.clj_gson NamedSerializer
                                  DynamicObject
                                  DynamicObjectTypeAdapter
                                  DynamicObjectTypeAdapter$Factory]))
 
-;; documentation, https://github.com/spoon16/gson-clj/blob/master/gson-config.example
+;; documentation, https://github.com/spoon16/clj-gson/blob/master/gson-config.example
 (def ^:dynamic *gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
                               :flags #{:enable-complex-map-key-serialization}
                               :date-format "yyyy-MM-dd'T'HH:mm:ssZ"})
@@ -87,12 +87,16 @@
       (set-date-format gson-builder date-format)))
   gson-builder)
 
+(defn make-gson-builder
+  [gson-config]
+  (-> (GsonBuilder.)
+      (configure-clojure-type-adapters gson-config)
+      (configure-flags gson-config)
+      (configure-date-format gson-config)))
+
 (defn make-gson
   ([]
     (make-gson *gson-config*))
   ([gson-config]
-    (-> (GsonBuilder.)
-        (configure-clojure-type-adapters gson-config)
-        (configure-flags gson-config)
-        (configure-date-format gson-config)
+    (-> (make-gson-builder gson-config)
         (.create))))

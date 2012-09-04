@@ -4,11 +4,11 @@
             Use 'to-json' or 'to-json-as' to serialize an object as a JSON string.
             Use 'from-json' or 'from-json-as' to deserialize an object from JSON source.
             Use 'parse-json' to perform a raw parse of JSON source into a tree typed com.google.gson.JsonElement"}
-  gson-clj.json
-  (:require [gson-clj.gson :as gson])
+  clj-gson.json
+  (:require [clj-gson.gson :as gson])
   (:import [com.google.gson Gson
                             JsonParser]
-           [com.spoon16.gson_clj DynamicObject
+           [com.spoon16.clj_gson DynamicObject
                                  DynamicObjectTypeAdapter]))
 
 (defn to-json-as

@@ -1,4 +1,4 @@
-package com.spoon16.gson_clj;
+package com.spoon16.clj_gson;
 
 /**
  * This is just an {@link Object} wrapper. Gson does not allow the registered type adapter for {@link Object}

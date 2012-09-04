@@ -1,6 +1,6 @@
-# gson-clj
+# clj-gson
 
-[![Build Status](https://secure.travis-ci.org/spoon16/gson-clj.png)](http://travis-ci.org/spoon16/gson-clj)
+[![Build Status](https://secure.travis-ci.org/spoon16/clj-gson.png)](http://travis-ci.org/spoon16/clj-gson)
 
 Clojure bindings for Gson, Google's JSON parsing library.
 See https://code.google.com/p/google-gson/ and http://www.json.org/
@@ -9,19 +9,19 @@ See https://code.google.com/p/google-gson/ and http://www.json.org/
 
 ### [Leiningen](https://github.com/technomancy/leiningen)
 
-    [com.spoon16/gson-clj "0.0.1"]
+    [com.spoon16/clj-gson "0.0.1"]
 
 ### [Maven](http://maven.apache.org/):
 
     <dependency>
       <groupId>com.spoon16</groupId>
-      <artifactId>gson-clj</artifactId>
+      <artifactId>clj-gson</artifactId>
       <version>0.0.1</version>
     </dependency>
 
 ## Usage
 
-    (use '[gson-clj.json :only (to-json from-json)])
+    (use '[clj-gson.json :only (to-json from-json)])
 
     ;; write json
     (to-json {:hello [1 "two" 3] :world {"ell" "ee"}})

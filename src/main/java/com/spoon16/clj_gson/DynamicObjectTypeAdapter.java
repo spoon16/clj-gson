@@ -1,4 +1,4 @@
-package com.spoon16.gson_clj;
+package com.spoon16.clj_gson;
 
 import java.io.IOException;
 
@@ -55,7 +55,7 @@ public class DynamicObjectTypeAdapter extends TypeAdapter<DynamicObject> {
 
 	@Override
 	public void write( final JsonWriter out, final DynamicObject wrappedValue ) throws IOException {
-		throw new UnsupportedOperationException( "Serialization of this type is not supported. DynamicObject instances are not meant to be used outside of gson-clj." );
+		throw new UnsupportedOperationException( "Serialization of this type is not supported. DynamicObject instances are not meant to be used outside of clj-gson." );
 	}
 
 	public static class Factory implements TypeAdapterFactory {

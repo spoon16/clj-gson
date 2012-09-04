@@ -1,5 +1,5 @@
 {
-;; ---------- gson-clj Configuration 
+;; ---------- clj-gson Configuration 
 
 ;; The presence of the :clojure-type-adapters flag will register the type 
 ;; adapters that ensure Clojure types are serialized and deserialized cleanly.
