@@ -21,15 +21,38 @@ See https://code.google.com/p/google-gson/ and http://www.json.org/
 
 ## Usage
 
-    (use '[clj-gson.json :only (to-json from-json)])
+### Basics
 
-    ;; write json
-    (to-json {:hello [1 "two" 3] :world {"ell" "ee"}})
-    ;;=> {"world":{"ell":"ee"},"hello":[1,"two",3]}"
+    => (use '[clj-gson.json :only (to-json from-json)])
 
-    ;; read json
-    (from-json "{ \"hello\": [1,\"two\",3], \"world\": { \"ell\": \"ee\" } }" )
-    ;;=> {:world {:ell "ee"}, :hello [1.0 "two" 3.0]}
+    ;; clojure -> json
+    => (to-json {:hello [1 "two" 3] :world {"ell" "ee"}})
+    {
+      "world": {
+        "ell": "ee"
+      },
+      "hello": [
+        1,
+        "two",
+        3
+      ]
+    }
+
+    ;; json -> clojure
+    => (from-json "{ \"hello\": [1,\"two\",3], \"world\": { \"ell\": \"ee\" } }")
+    {:world {:ell "ee"}, :hello [1.0 "two" 3.0]}
+
+    ;; string -> json tree
+    => (parse-json-tree "{ \"hello\": [1,\"two\",3], \"world\": { \"ell\": \"ee\" } }") 
+    #<JsonObject {"hello":[1,"two",3],"world":{"ell":"ee"}}>
+
+    ;; clojure -> json tree
+    => (to-json-tree {:hello [1 "two" 3] :world {"ell" "ee"}})
+    #<JsonObject {"world":{"ell":"ee"},"hello":[1,"two",3]}>
+
+### GSON Configuration
+
+TODO
 
 ## License
 
