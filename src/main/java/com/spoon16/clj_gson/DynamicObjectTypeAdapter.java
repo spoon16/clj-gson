@@ -36,40 +36,46 @@ import com.google.gson.reflect.TypeToken;
  */
 public class DynamicObjectTypeAdapter extends TypeAdapter<DynamicObject> {
 	private final Gson gson;
-	private final boolean keywordizeAttributeNames;
+	private final boolean deserializeMapKeysAsKeywords;
+	private final boolean forceSerializeMapKeysWithGson;
 
-	private DynamicObjectTypeAdapter( final Gson gson, final boolean keywordizeAttributeNames ) {
+	private DynamicObjectTypeAdapter( final Gson gson, final boolean deserializeMapKeysAsKeywords, final boolean forceSerializeMapKeysWithGson ) {
 		this.gson = gson;
-		this.keywordizeAttributeNames = keywordizeAttributeNames;
+		this.deserializeMapKeysAsKeywords = deserializeMapKeysAsKeywords;
+		this.forceSerializeMapKeysWithGson = forceSerializeMapKeysWithGson;
 	}
 
 	@Override
 	public DynamicObject read( final JsonReader in ) throws IOException {
-		final JsonElement value = new JsonParser().parse( in );
-	    if ( value.isJsonNull() ) {
+		final JsonElement inputElement = new JsonParser().parse( in );
+	    if ( inputElement.isJsonNull() ) {
 	      return DynamicObject.create( null );
 	    }
 
-	    return DynamicObjectDeserializer.deserialize( gson, keywordizeAttributeNames, value );
+	    return DynamicObjectDeserializer.deserialize( gson, deserializeMapKeysAsKeywords, inputElement );
 	}
 
 	@Override
 	public void write( final JsonWriter out, final DynamicObject wrappedValue ) throws IOException {
-		throw new UnsupportedOperationException( "Serialization of this type is not supported. DynamicObject instances are not meant to be used outside of clj-gson." );
+		final Object outputValue = wrappedValue.getValue();
+		final JsonElement outputElement = DynamicObjectSerializer.serialize( gson, forceSerializeMapKeysWithGson, outputValue );
+		gson.toJson( outputElement, out );
 	}
 
 	public static class Factory implements TypeAdapterFactory {
-		private final boolean keywordizeAttributeNames;
+		private final boolean deserializeMapKeysAsKeywords;
+		private final boolean forceSerializeMapKeysWithGson;
 
-		public Factory( final boolean keywordizeAttributeNames ) {
-			this.keywordizeAttributeNames = keywordizeAttributeNames;
+		public Factory( final boolean deserializeMapKeysAsKeywords, final boolean forceSerializeMapKeysWithGson ) {
+			this.deserializeMapKeysAsKeywords = deserializeMapKeysAsKeywords;
+			this.forceSerializeMapKeysWithGson = forceSerializeMapKeysWithGson;
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> TypeAdapter<T> create( final Gson gson, final TypeToken<T> typeToken ) {
 			if ( typeToken.getRawType() == DynamicObject.class ) {
-				return (TypeAdapter<T>) new DynamicObjectTypeAdapter( gson, keywordizeAttributeNames );
+				return (TypeAdapter<T>) new DynamicObjectTypeAdapter( gson, deserializeMapKeysAsKeywords, forceSerializeMapKeysWithGson );
 			}
 
 			return null;

@@ -15,19 +15,21 @@
                                  DynamicObjectTypeAdapter$Factory]))
 
 ;; documentation, https://github.com/spoon16/clj-gson/blob/master/gson-config.example
-(def ^:dynamic *gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                              :flags #{:enable-complex-map-key-serialization
-                                       :pretty-printing}
+(def ^:dynamic *gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords
+                                                               :force-serialize-map-keys-with-gson}}
+                              :flags #{:pretty-printing}
                               :date-format "yyyy-MM-dd'T'HH:mm:ssZ"})
 
 (defn- configure-clojure-type-adapters
-  [^GsonBuilder gson-builder {:keys [clojure-type-adapters]}]
-  (when clojure-type-adapters
-    (let [flags (:flags clojure-type-adapters)
-          keywordize (contains? flags :deserialize-map-keys-as-keywords)]
-      (-> gson-builder
-        (.registerTypeAdapterFactory (DynamicObjectTypeAdapter$Factory. keywordize))
-        (.registerTypeHierarchyAdapter Named (NamedSerializer.)))))
+  [^GsonBuilder gson-builder gson-config]
+  (let [{clojure-type-adapter-config :clojure-type-adapters} gson-config]
+    (when clojure-type-adapter-config
+      (let [{clojure-type-adapter-flags :flags} clojure-type-adapter-config
+            deserialize-map-keys-as-keywords (contains? clojure-type-adapter-flags :deserialize-map-keys-as-keywords)
+            force-serialize-map-keys-with-gson (contains? clojure-type-adapter-flags :force-serialize-map-keys-with-gson)]
+        (-> gson-builder
+          (.registerTypeAdapterFactory (DynamicObjectTypeAdapter$Factory. deserialize-map-keys-as-keywords force-serialize-map-keys-with-gson))
+          (.registerTypeHierarchyAdapter Named (NamedSerializer.))))))
   gson-builder)
 
 (defmulti configure-flag (fn [flag _] (identity flag)))

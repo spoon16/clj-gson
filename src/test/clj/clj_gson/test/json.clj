@@ -4,8 +4,7 @@
           [clojure.test]))
 
 (deftest test-to-json
-    (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                                  :flags #{:enable-complex-map-key-serialization}}]
+    (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:force-serialize-map-keys-with-gson}}}]
 
          (testing "vector"
             (let [expected "[]"
@@ -38,7 +37,7 @@
                  (is (= expected result))))
 
          (testing "complex-map"
-            (let [expected "{\"abc\":[9,\"str\",{\"7\":6}],\"key\":\"hello\",\"true\":false,\"123\":\"world\"}"
+            (let [expected "{\"abc\":[9,\"str\",{\"7\":6}],\"123\":\"world\",\"true\":false,\"key\":\"hello\"}"
                   result (to-json {:key "hello"
                                    123 "world"
                                    true false
@@ -46,8 +45,7 @@
                  (is (= expected result))))))
 
 (deftest test-from-json
-    (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
-                                  :flags #{:enable-complex-map-key-serialization}}]
+    (binding [gson/*gson-config* {:clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}}]
     (testing "vector"
         (let [expected []
               result (from-json "[]")]

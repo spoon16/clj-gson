@@ -8,7 +8,6 @@ import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
@@ -19,17 +18,17 @@ import clojure.lang.IPersistentMap;
 import clojure.lang.PersistentHashMap;
 import clojure.lang.Keyword;
 
-public class DynamicObjectDeserializer {
+class DynamicObjectDeserializer {
     private final Gson gson;
-    private final boolean keywordizeAttributeNames;
+    private final boolean deserializeMapKeysAsKeywords;
 
-    public static DynamicObject deserialize( final Gson gson, final boolean keywordizeAttributeNames, final JsonElement jsonSource ) {
-        return new DynamicObjectDeserializer( gson, keywordizeAttributeNames ).deserialize( jsonSource );
+    public static DynamicObject deserialize( final Gson gson, final boolean deserializeMapKeysAsKeywords, final JsonElement jsonSource ) {
+        return new DynamicObjectDeserializer( gson, deserializeMapKeysAsKeywords ).deserialize( jsonSource );
     }
 
-    private DynamicObjectDeserializer( final Gson gson, final boolean keywordizeAttributeNames ) {
+    private DynamicObjectDeserializer( final Gson gson, final boolean deserializeMapKeysAsKeywords ) {
         this.gson = gson;
-        this.keywordizeAttributeNames = keywordizeAttributeNames;
+        this.deserializeMapKeysAsKeywords = deserializeMapKeysAsKeywords;
     }
 
     public DynamicObject deserialize( final JsonElement jsonSource ) {
@@ -56,7 +55,7 @@ public class DynamicObjectDeserializer {
     private void readObjectAttributes( final JsonObject jsonSource, final Map<Object, Object> attributes ) {
         for ( final Map.Entry<String, JsonElement> attributeKeyValue : jsonSource.entrySet() ) {
             final String attributeName = attributeKeyValue.getKey();
-            final Object attributeKey = keywordizeAttributeNames ? keywordizeAttributeName( attributeName ) : attributeName;
+            final Object attributeKey = deserializeMapKeysAsKeywords ? keywordizeAttributeName( attributeName ) : attributeName;
 
             final JsonElement attributeValue = attributeKeyValue.getValue();
 

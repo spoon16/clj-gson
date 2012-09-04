@@ -3,7 +3,22 @@
 
 ;; The presence of the :clojure-type-adapters flag will register the type 
 ;; adapters that ensure Clojure types are serialized and deserialized cleanly.
-   :clojure-type-adapters {:flags #{:deserialize-map-keys-as-keywords}}
+  :clojure-type-adapters {
+    :flags #{
+
+;; When no specific target type is defined during deserialization will convert 
+;; JsonObject attribute names to keywords
+      :deserialize-map-keys-as-keywords
+
+;; Use the TypeAdapter associated with each Map Key Type to convert each key 
+;; to a JsonPrimitive, use the String value of the resulting JsonPrimitive as
+;; the resulting JsonObject attribute name. Non-JsonPrimitive (JsonObject 
+;; or JsonArray) map keys are not supported.  When 
+;; :enable-complex-map-key-serialization is enabled in the Gson Configuration 
+;; this flag can be excluded.
+      :force-serialize-map-keys-with-gson
+    }
+  }
 
 ;; ---------- Gson Configuration
 ;; detailed information about Gson configuration

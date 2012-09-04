@@ -35,21 +35,23 @@
   ([^Gson gson obj serialize-as]
     (.toJson gson obj serialize-as)))
 
+(defn- are-clojure-type-adapters-registered?
+  [^Gson gson]
+  (instance? DynamicObjectTypeAdapter (.getAdapter gson DynamicObject)))
+
 (defn to-json
   ([obj]
   	(to-json (gson/make-gson) obj))
   ([^Gson gson obj]
-  	(to-json-as gson obj (type obj))))
+    (if (are-clojure-type-adapters-registered? gson)
+      (to-json-as gson (DynamicObject/create obj) DynamicObject)
+      (to-json-as gson obj (type obj)))))
 
 (defn from-json-as
   ([json-source deserialize-as]
     (from-json-as (gson/make-gson) json-source deserialize-as))
   ([^Gson gson json-source deserialize-as]
     (.fromJson gson json-source deserialize-as)))
-
-(defn- are-clojure-type-adapters-registered?
-  [^Gson gson]
-  (instance? DynamicObjectTypeAdapter (.getAdapter gson DynamicObject)))
 
 (defn from-json
   ([json-source]
